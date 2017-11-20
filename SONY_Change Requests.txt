@@ -1,0 +1,18 @@
+
+  1.Promotions of websites (Wordpress and PHP-->Create containers in MARATHON): Do changes in Gitlab/Public/index.php file for PHP site and Gitlab/Readme file for Wordpress site. 
+  2.Devel and Stage Preview generations,Expiry and Delete (with create and deletion of Containers in Marathon)
+3.Manage object storage buckets from Devel to Stage 
+				     Stage to Production     
+4.Manage Databases from Devel to Stage 
+			Devel to Stage to Production
+   5.Add Description in Assessment security pop up to raise new Assessment for promotion of site from Stage to Production.
+   6.Cron Jobs functionality in Website details screen 
+   7.Display details and Status of the current website details at backend to the logged in user i.e Deployments status functionality in website details screen.
+   8.Set Project limit for User:Project limit is 10 projects!contact your administrator to increase it
+
+Date: 01/07/2016
+   9.Deployments Status section should Expand by default 
+   10.Merge request button should display only after Accept of Assessment(from SONY)i.e.completion of Assessment request only.
+
+Date:01/14/2016
+   11.Users should be able to view object storage and database credentials from within the DeSman interface.

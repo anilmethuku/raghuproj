@@ -1,0 +1,62 @@
+Riak CS (Cloud Storage):
+http://docs.basho.com/riakcs/latest/
+
+
+HaProxy:
+http://cbonte.github.io/haproxy-dconv/intro-1.7.html
+
+Nginx:
+http://nginx.org/en/docs/
+
+Mesos/Marathon/Chronos:
+Mesos: http://mesos.apache.org/documentation/latest/
+Marathon: https://mesosphere.github.io/marathon/
+Chronos: https://mesos.github.io/chronos/docs/
+Mesos-DNS: https://mesosphere.github.io/mesos-dns/
+
+Jenkins as Mesos Framework:
+http://www.ebaytechblog.com/2014/04/04/delivering-ebays-ci-solution-with-apache-mesos-part-i/
+http://www.ebaytechblog.com/2014/05/12/delivering-ebays-ci-solution-with-apache-mesos-part-ii/
+
+
+These are technical stack that we use in DesMan
+Languages:
+CakePHP:
+Framework to build web Applications based on MVC
+Scripts:
+Backbone.js
+D3.js
+Require.js
+PERL:(DesMan Worker)
+Running concurrent tasks for DesMan Application
+NodeJS:
+NodeJS modules for creating on-fly based web-server configs for application(MSD and DNR)
+
+Tools:
+GitLab:
+Source code management for applications that are created under DesMan
+Databases:
+MySQL
+ActiveMQ:
+Messaging Queue
+Jenkins:
+To build Docker Images
+Docker:
+Linux Containers(uses shared operating systems), this is for running Applications(Wordpress,PHP and others)
+Mesos:
+open-source cluster manager for servers
+Marathon:
+A framework that can be registered mesos, to pool the resources from cluster for running the tasks.
+Chronos:
+Same as Marathon but for job scheduler like Cron jobs in Linux Servers
+RiakCS:
+object storage software, compatible with AWS S3 API
+LDAP:
+for User Authentication 
+Archer:
+For Security Assessments
+Zookeeper:
+open source distributed configuration service to elect Mesos, Marathon and Chronos leaders
+Web Servers:
+Nginx and HaProxy 
+

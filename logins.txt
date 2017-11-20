@@ -1,0 +1,466 @@
+Url: inetuc-fw01.inetuhosted.net
+Username: dnagaramaraju
+ Password: Sonydesman@2016
+ 
+Desman tool:
+Url: https://prime2-desman.ccs.inetu.org/
+Username: dnagaramaraju
+ Password: Sonydesman@2016
+ 
+Marathon url: http://inetuc-mesos01.inetuhosted.net:8080/ui/#/apps
+Mesos url: http://inetuc-mesos03.inetuhosted.net:5050/#/
+Chronos url :http://inetuc-mesos01.inetuhosted.net:4400/
+
+
+ID -  psingh
+PWD -  lmOTE1N2MxYWQw
+
+lmOTE1N2MxYWQw
+
+ID - mgarg
+PWD - ur+jxq'BU){K!R5F
+
+to access code use /var/www/prime/desman
+
+URL : https://2xprime.atlassian.net/login?
+Username: vbogireddy@primetgi.com
+Password: prime@123
+
+https://gitlab.ccs.inetu.org/inetu/desman/commits/devel
+
+When we are working on desman code 
+==================================
+(first use sudo -s so that password will not ask again otherwise use "sudo" for each git command and enter password)
+
+Here we have two servers gitlab and devel. First when we commit code and push to gitlab server and again we need to pull that code to devel server from gitlab server after john does the merge request.
+
+Every day check for new commits on gitlab server and pull the code to devel
+   git checkout to devel
+   git pull origin devel (*** we should only devel to devel branch not to any branch)
+After that rebase the code to your branch
+   git checkout to your branch	
+   git rebase devel
+All the commits are now on your branch(means you have latest code on your branch, head pointing to your branch)
+
+
+
+1) we need to create a new branch on devel for that first we need to checkout to devel branch
+   git checkout devel
+2)After that we need to create new branch and checkout to that branch
+   git branch feature/branch-name
+or
+   git checkout -b feature/branch-name ( this will automatically create branch and also checkout to that branch)
+3)once coding is completed we need to commit the code 
+   git commit -a ( add comment for that branch)
+4)git push -u origin feature/branch-name (to gitlab server)
+5)Raise merge request to john so that john will review code and merge that new branch to devel (in gitlab server)
+6) And once merge request is completed pull gitlab server devel branch to devel server devel branch
+
+when you want to remove the pulled code on git use
+git checkout filename (it will remove modified files)
+
+when rebasing the code and found code is already there written by someone just use
+git rebase --skip
+
+
+
+
+Desman Worker restart
+=====================
+sudo docker ps -a(all containers)
+
+docker start prime-worker (if it is in exited status)
+
+docker stop prime-worker
+
+sudo docker rm prime-worker
+
+
+docker exec -it prime-worker bash 
+
+sudo docker build -t inetu/test-worker:0.0.0 .
+
+sudo docker images
+
+
+How to work on perl code (Sftp server only)
+==========================================
+1) copy the worker folder from desman/Vendor/inetu to any folder in sftp sever
+2) make changes to the perl code 
+3) build docker image for changed perl code in sftp server
+
+   sudo docker build -t inetu/test-worker:0.0 . (last dot is regarding if perl code is in same directroy or need to mention the path of the docker file)
+
+4) If encountring any issue with docker image build copy paste the dcoker file configuration already exist in worker-test folder
+5) get the openshift token 
+6) Delete existing docker container ---- sudo docker rm prime-worker
+7) run the docker container after copy & pasting the token using docker run command
+8) If it is created but not up check for logs ---- sudo docker logs prime-worker
+ 
+curl -k -X POST -u "prime-worker:hUB(N@E[Dcuseu" --data "scopes=session" https://m4d-bkr.ccs.inetu.org/broker/rest/user/authorizations/
+
+sudo docker run -dt -h prime-worker   --name prime-worker     -v /etc/sssd:/etc/sssd:ro     -v /etc/prime-worker.conf:/etc/desman-worker.conf:ro      -v /var/lib/sss:/var/lib/sss:ro   -v /var/log/prime-worker/:/var/log/desman/     -v /srv/sftp:/srv/sftp      -e HOST_IP_ADDR=`perl -mNet::Address::IP::Local -e 'print Net::Address::IP::Local->public;'`     -e GITLAB_HOST=https://gitlab.ccs.inetu.org   -e OPENSHIFT_BROKER=https://m4d-bkr.ccs.inetu.org     -e OPENSHIFT_TOKEN=91bf6d77fcae6c18d773c012c7c2feb912e6ff8475403030f843bf822c5a48fb    -e GITLAB_PRIVATE_TOKEN=vGRTBkKSpKpsmiG1BssS     inetu/ragtest-worker:1.3
+
+
+
+
+To remove unwanted changes in file
+==================================
+ git checkout -- WebsitesController.php
+
+Archer system token expires
+===========================
+2016-04-26 06:19:38 Error: OH No...
+2016-04-26 06:19:38 Error: Server was unable to process request. ---> Invalid session token
+so when token expires we have to clear the cache and enable debug mode which create the cache again and than disable the debug mode
+
+Git rebase
+============
+u have to rebase ur branch to devel as well as devel has so many commit which your branch doesn't have
+we should use rebase when for eg. I was working on abc branch which I created from devel but now devel has some more code , in this case now to sync my abc branch with devel I will do rebase so that new changes which are in devel should also come into my branch .
+
+we always rebase from devel not from master
+
+a. commit the code in branch
+b. push the code to git (git push -u origin bugfix/preview-docker)
+c. checkout to devel branch
+1. pull changes on devel (git pull -u origin bugfix/preview-docker)
+2. checkout to your branch
+3. rebase to devel
+
+Check Devel server is upto date with gitlab server
+==================================================
+ok so make sure before creating branch from devel that devel has latest code or devel branch on devel server should be in same state as devel branch on gitlab server .. if not you have to pull the changes first and than create new branch
+
+pull code into devel branch on devel server if it is not up to date with gitlab server
+[4:07:04 PM] Pardeep Singh: you can do git log in devel branch on devel server and see commits on devel branch on gitlab server
+[4:07:32 PM] Pardeep Singh: ifgitlab server has more commits than pull the code
+
+
+how to check perl worker logs
+=============================
+first login in sftp server
+cd /var/log/prime-worker/vim worker.log 
+
+to check at run time
+cd /var/log/prime-worker/tail -f worker.log 
+
+cat worker.log |grep -i "qatest554.com"
+
+Git commands
+============
+git config --global http.sslVerify false
+git clone https://gitlab.ccs.inetu.org/inetu/desman.git
+
+$ git checkout -b [name_of_your_new_branch]
+
+[psingh@inetuc-desman01 desman]$ git push -u origin bugfix/preview-docker
+Counting objects: 7, done.
+Delta compression using up to 2 threads.
+Compressing objects: 100% (4/4), done.
+Writing objects: 100% (4/4), 548 bytes, done.
+Total 4 (delta 3), reused 0 (delta 0)
+To git@gitlab.ccs.inetu.org:inetu/desman.git
+ * [new branch]      bugfix/preview-docker -> bugfix/preview-docker
+Branch bugfix/preview-docker set up to track remote branch bugfix/preview-docker from origin.
+[psingh@inetuc-desman01 desman]$ cd /var/www/prime/desman-2
+[psingh@inetuc-desman01 desman-2]$ git pull -u origin bugfix/preview-docker
+error: cannot open .git/FETCH_HEAD: Permission denied
+
+1)first git push the branch from desman to git
+ git push -u origin bugfix/preview-docker
+2)create a branch for the first time and pull the branch from git
+sudo git checkout -b origin/bugifx/preview-docker bugifx/preview-docker
+3)now pull the code from git branch
+ sudo git pull origin bugfix/preview-docker
+
+
+first time we have to fetch new branch from remote repo using
+---------------------------------------
+git fetch origin/bugifx/preview-docker
+---------------------------------------
+then we have to create a branch from remotely fetched repo using
+--------------------------------------------------------------
+git branch -b origin/bugifx/preview-docker bugifx/preview-docker
+--------------------------------------------------------------
+now u have local branch which is tracking/linked to remote branch of same name
+
+git history
+============
+git log
+
+
+
+mysql commands
+==============
+Prime MysQL
+-----------
+mysql -u prime_desmandb --database prime_desmandb -p
+pwd: ata>&ywOpdK5dh
+
+Prime2 MySQL
+------------
+mysql -u pardeep -h 10.110.3.20 -p
+Password: root
+Database Name: prime_desmandb2
+
+When JS files are changed we need to run following command
+===========================================================
+[3:58:49 PM] Manish Garg: you need to run the following command in the webroot/js folder
+[3:58:56 PM] Manish Garg: sudo r.js -o build.js
+[3:59:17 PM | Edited 3:59:51 PM] Manish Garg: after that changes will reflect there..
+If we change any js file we need to run this command?
+[4:00:25 PM] Manish Garg: just not in case of obs
+[4:00:52 PM] Manish Garg: i.e. chnages related to obs files in javascript
+
+
+Coding Standards
+================
+[6:37:07 PM] Manish Garg: please insure that ur code follow the standards as mentioned in mail and and push code to gitlab
+[6:37:22 PM] Manish Garg: no need to create merge request now, just push branch
+[6:37:52 PM] Manish Garg: also, remove the DeploymentController's watch name changes before commiting
+[6:38:27 PM] Manish Garg: and run git diff command before commiting to review the changes u have done
+[6:38:48 PM] Manish Garg: so that no new line changes or whitespace changes get commited,
+[6:39:07 PM] Manish Garg: only the changes which u done knowingly should be committed
+
+# Edit hello.py and main.py
+git add hello.py
+git commit
+
+# Realize you forgot to add the changes from main.py
+git add main.py
+git commit --amend --no-edit
+
+
+
+
+
+To clear cache
+==============
+rm -rf tmp/cache/*
+[6:30:22 PM] Manish Garg: There is one more thing that you need to do when you clean cache, as you will notice that after clearing cache website won't open..
+->you need to go to Config/core.php file, and there will be this line(39):
+   Configure::write('debug',0);
+->You need to change 0 to 2. i.e:
+   Configure::write('debug',2);
+->Then refresh the prime-desman page, it will be loaded now.
+-> Again change 2 to 0 in Config/core.php i/e:
+   Configure::write('debug',0);
+-> everything done.
+[6:30:30 PM | Edited 6:31:31 PM] Manish Garg: please note these steps
+[6:30:42 PM] Manish Garg: after running sudo rm -rf tmp/cache/*
+
+All commands
+============
+[7:04:54 PM] Manish Garg: sudo git checkout obs-enhancements
+sudo git fetch origin/bugfix/chronos-job-deletion
+# after adding files and making changes
+git add FILENAME
+git commit -m "yeahhh"
+git push origin bugfix/chronos-form-datepicker-reset
+sudo git pull origin obs-enhancements
+# To create minified js file after we make changes in Js files
+# changes will reflect only after running this command successfully
+sudo r.js -o build.js
+
+ public $default = array(
+        'datasource' => 'Database/Mysql',
+        'persistent' => false,
+        'host' => 'localhost',
+        'login' => 'prime_desmandb',
+        'password' => 'ata>&ywOpdK5dh',
+        'database' => 'prime_desmandb',
+        'prefix' => '',
+        //'encoding' => 'utf8',
+    );
+ 
+[Gitlab]
+host = gitlab.ccs.inetu.org
+port = 443
+base = /api/v3
+hook-base = https://prime2-desman.ccs.inetu.org
+login = desword
+password = #H+km04MOa~h7P
+
+ sudo git checkout -b enhancements obs-enhancements
+ sudo git commit --author="Pardeep Singh <pardeep.singh@paxcel.net>" -m "Added update status logic in assessment model to update assessment status if status differ in desman db from archer system" 
+ git commit --author="Manish Garg <manish.garg@paxcel.net>" -m "fixed Jira issue 188"
+ git commit --author="Pardeep Singh <pardeep.singh@paxcel.com>" -m "Added code to send mail when assessment status changes"
+ git clone psingh@inetuc-desman01.inetuhosted.net:/var/www/prime/desman
+ 
+
+ALTER TABLE webdbs MODIFY district VARCHAR(32);
+ 
+ mysql -u prime_desmandb --database prime_desmandb -p 
+ mysqldump -u "prime_desmandb" --database "prime_desmandb" --password="ata>&ywOpdK5dh"  > dump.sql
+ mysqldump -P 3306 -h 127.0.0.1 -u prime_desmandb prime_desmandb > db_backup.sql
+
+[mysql]
+login = inetu_desworker
+password = M3ZjJmN2MyYmE3
+host = inetuc-desman01
+database = inetu_desmandb
+port = 3306
+
+'datasource' => 'Database/Mysql',
+        'persistent' => false,
+        'host' => 'localhost',
+        'login' => 'imhccu',
+        'password' => 'sIXFgt1538X6Ju',
+        'database' => 'imhccdb_test',
+        'prefix' => '',
+        //'encoding' => 'utf8',
+
+   'datasource' => 'Database/Mysql',
+        'persistent' => false,
+        'host' => 'localhost',
+        'login' => 'inetu_desmandb',
+        'password' => 'ffXxzdQEoem1DY',
+        'database' => 'inetu_desmandb',
+        'prefix' => '',
+
+
+ mysql -u inetu_desmandb --database inetu_desmandb -p 
+ mysql -u imhccu --database imhccdb_test -p 
+ 
+ mysqldump -u "admin_ff0yaPFb" -h "10.110.2.2" -P 3306 --password="FlN2FjNWM5NmZh" --extended-insert=FALSE "db_ff0yaPFb"
+ 
+ 
+ delete from webdbs where website_id in (926);
+ delete from stores where website_id in (926);
+ delete from previews where website_id in (926);
+ delete from websites where id in (926);
+ delete from deployments where website_id in (926);
+ delete from assessments where application_id not in(158281,191124);
+
+ delete from webdbs where website_id=644 and district="previewdevel";
+ delete from stores where website_id=644 and district="previewdevel";
+ delete from previews where id=325;
+ delete from deployments where website_id=644 and district="previewdevel";
+
+delete from webdbs where website_id  not in (402,404);
+delete from stores where website_id  not in (402,404);
+delete from previews where website_id  not in (402,404);
+delete from websites where id  not in (402,404);
+delete from deployments where website_id  not in (402,404);
+delete from assessments where name not in('APP-158237','APP-119461');
+
+create table chronosrecords(
+ id 
+)
+
+create table chronos_records(
+    id int not null auto_increment,
+ created datetime,
+ modified datetime,
+ name varchar(50),
+ website_id int,
+ dockerImage varchar(100),
+ command varchar(100),
+ schedule varchar(50),
+ district varchar(30),
+ arguments varchar(100);
+ status bigint unsigned default 1,
+ repetition int,
+ intervals int,
+ primary key(id)
+ );
+
+ alter table chronos_records add column status bigint unsigned default 1;
+ select * from deployments where website_
+ 
+ SELECT * FROM INFORMATION_SCHEMA.TABLE_CONSTRAINTS; 
+ ALTER TABLE `chronos_records` DROP UNIQUE `unique_name`;
+[7:05:16 PM] Manish Garg: these are the mixup data
+[7:05:37 PM] Manish Garg: including commands and db queries and other stuff
+[7:05:47 PM] Manish Garg: u might get some useful things from it
+
+
+
+203053
+
+155313
+
+157999
+
+138985
+
+119631
+
+119697
+
+119652
+
+203053,155313,157999,138985,119631,119697,119652
+
+To have view in devel button (temporary fix)
+============================
+in deployment controller we need to add "prime-" desman-marathon-watch at line 201
+and in line 1374 we need to add code if ($this->getAppStatus($marathonAppId)) {
+    if (!$this->Deployment->current($id, $deployment_data['Deployment']['district'])) {
+       throw new CakeException("Failed to set current status for deployment $id");
+    }
+}
+
+https://gitlab.smehost.net/inetu/developer-service-manager/wikis/contribution-guidelines
+https://gitlab.ccs.inetu.org/inetu/desman/wikis/contribution-guidelines
+
+git process
+============
+Do work on a web site.
+
+Create a branch for a new story you’re working on.
+
+Do some work in that branch.
+
+At this stage, you’ll receive a call that another issue is critical and you need a hotfix. You’ll do the following:
+
+Switch to your production branch.
+
+Create a branch to add the hotfix.
+
+
+
+
+DELETE T
+FROM events T
+INNER JOIN deployments on deployments.id = T.deployment_id
+WHERE deployments.website_id in (1078,1086,1092,1093,1094,1095);
+
+delete from deployments where website_id in (1078,1086,1092,1093,1094,1095);
+delete from stores where website_id in (1078,1086,1092,1093,1094,1095);
+delete from webdbs where website_id in (1078,1086,1092,1093,1094,1095);
+delete from websites where id in (1078,1086,1092,1093,1094,1095);
+
+delete from aliases where website_id in (1078,1086,1092,1093,1094,1095);
+delete from assessments where application_id in (203053,155313,157999,138985,119631,119697,119652);
+
+
+After it’s tested, merge the hotfix branch, and push to production.
+
+Switch back to your original story and continue working.
+
+
+
+[psingh@inetuc-desman01 desman]$ git pull -u origin improvement/archer-stage-url
+From gitlab.ccs.inetu.org:inetu/desman
+ * branch            improvement/archer-stage-url -> FETCH_HEAD
+Updating 324ae29..26d2816
+error: unable to unlink old 'webroot/js/desman-legacy.js' (Permission denied)
+[psingh@inetuc-desman01 desman]$ git status
+# On branch devel
+# Changed but not updated:
+#   (use "git add <file>..." to update what will be committed)
+#   (use "git checkout -- <file>..." to discard changes in working directory)
+#
+#       modified:   Controller/DeploymentsController.php
+#       modified:   Controller/WebsitesController.php
+#       modified:   Plugin/Archer/Model/Application.php
+#       modified:   View/Websites/view.ctp
+#
+no changes added to commit (use "git add" and/or "git commit -a")
+
+
+[5:23:34 PM] Raghuveer Jukanti: what is the problem with object storage pardeep?
+[5:23:49 PM] Pardeep Singh: obs server side problem even I don't know abt it
+
